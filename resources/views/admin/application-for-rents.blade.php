@@ -402,6 +402,49 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-------------------------- Search Start ------------------------------->
+                    <div class="card-body bg-light-subtle border border-dashed border-start-0 border-end-0">
+                        <form  action="{{ route('advance_search') }}" method="GET">
+                            <div class="row g-3">
+                                <div class="col-xxl-3 col-sm-12">
+                                    <label>Start Date</label>
+                                    <input type="date" name ="start_date" value="" class="form-control" id="" placeholder="Select date">
+                                </div>
+                                
+                                <div class="col-xxl-3 col-sm-4">
+                                    <label>End Date</label>
+                                    <input type="date" name ="end_date" value="" class="form-control" id="" placeholder="Select date"><!-- {{ Request::get('date') ?? date('Y-m-d') }} -->
+                                </div>
+                                
+                                <div class="col-xxl-3 col-sm-4">
+                                    <div class="input-light">
+                                        <label>Filter by Status</label>
+                                        <select class="form-control"  name="application_status" id="">
+                                            <option value="">Status</option>
+                                            <option value="all" selected>All</option>
+                                            <option value="1" {{ Request::get('application_status') == 1 ? 'selected' : '' }}>Approved</option>
+                                            <option value="2" {{ Request::get('application_status') == 2 ? 'selected' : '' }}>Rejected</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-xxl-1 col-sm-4" style="margin-top: 43px;">
+                                    <button type="submit" class="btn btn-primary w-100">
+                                        <i class="ri-equalizer-fill me-1 align-bottom"></i> Filters
+                                    </button>
+                                </div>
+                                <div class="col-xxl-1 col-sm-4" style="margin-top: 43px;">
+                                    <a href="{{ route('application-for-rents.index') }}" class="btn btn-warning">Reset</a>
+                                </div>
+                                
+                            </div>
+                           
+                        </form>
+                    </div>
+                    <!-------------------------- Search End --------------------------------->
+
+                                
                     <div class="card-body">
                         <div class="table-responsive">
                             <table id="buttons-datatables" class="table table-bordered nowrap align-middle" style="width:100%">

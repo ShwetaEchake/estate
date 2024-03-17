@@ -66,6 +66,8 @@
                                 </div>
                             </div>
 
+                            
+
                         </div>
                         <div class="card-footer">
                             <button type="submit" class="btn btn-primary" id="addSubmit">Submit</button>
@@ -278,6 +280,9 @@
                                 <div class="col-md-4 mt-3" id="property_photo_upload"></div>
                                 <div class="col-md-4 mt-3" id="dp_plan_upload"></div>
                             </div>
+
+
+
 
                         </div>
                         <div class="card-footer">

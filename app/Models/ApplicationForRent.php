@@ -16,7 +16,7 @@ class ApplicationForRent extends BaseModel
     
     public function zone()
     {
-        return $this->belongsTo(Zone::class);
+        return $this->belongsTo(Zone::class)->withDefault(['name' => 'zone 1']);
     }
     public function property()
     {

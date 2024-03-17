@@ -4,6 +4,15 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\Admin\Masters\WardController;
+use App\Http\Controllers\Admin\Masters\ZoneController;
+use App\Http\Controllers\Admin\Masters\PropertyTypeController;
+use App\Http\Controllers\Admin\Masters\TypeOfUseController;
+use App\Http\Controllers\Admin\Masters\SourceController;
+use App\Http\Controllers\Admin\Masters\ReligionController;
+use App\Http\Controllers\Admin\Masters\RuleController;
+use App\Http\Controllers\Admin\Masters\BilingTypeController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -51,18 +60,18 @@ Route::middleware(['auth','PreventBackHistory'])->group(function()
 
 
     // Masters
-    Route::resource('wards', App\Http\Controllers\Admin\Masters\WardController::class );
-    Route::resource('zones', App\Http\Controllers\Admin\Masters\ZoneController::class );
-    Route::resource('property-type', App\Http\Controllers\Admin\Masters\PropertyTypeController::class );
-    Route::resource('type-of-use', App\Http\Controllers\Admin\Masters\TypeOfUseController::class );
-    Route::resource('sources', App\Http\Controllers\Admin\Masters\SourceController::class );
-    Route::resource('religions', App\Http\Controllers\Admin\Masters\ReligionController::class );
-    Route::resource('rules', App\Http\Controllers\Admin\Masters\RuleController::class );
-    Route::resource('biling-types', App\Http\Controllers\Admin\Masters\BilingTypeController::class );
- 
+    Route::resources([
+        'wards' => WardController::class,
+        'zones' => ZoneController::class,
+        'property-type' => PropertyTypeController::class,
+        'type-of-use' => TypeOfUseController::class,
+        'sources' => SourceController::class,
+        'religions' => ReligionController::class,
+        'rules' => RuleController::class,
+        'biling-types' => BilingTypeController::class,
+    ]);
 
 
-    
     //Party Registration
     Route::resource('party-registration', App\Http\Controllers\Admin\PartyRegistrationController::class );
 
@@ -78,6 +87,10 @@ Route::middleware(['auth','PreventBackHistory'])->group(function()
 
     Route::get('application-for-rents/{id}/units', [App\Http\Controllers\Admin\ApplicationForRentController::class, 'getUnits'] )->name('application-for-rents.units');
     Route::get('application-for-rents/{application_for_rent}/party-detail', [App\Http\Controllers\Admin\ApplicationForRentController::class, 'getPartyDetails'] )->name('application-for-rents.party-detail');
+
+    Route::get('/advance', [App\Http\Controllers\Admin\ApplicationForRentController::class, 'advance'] )->name('advance_search');
+    // Route::match(['get', 'post'], '/advance', [App\Http\Controllers\Admin\ApplicationForRentController::class, 'advance'])->name('advance_search');
+
 
     //Application for rental properties
     Route::resource('application-for-rental-properties', App\Http\Controllers\Admin\ApplicationForRentalPropertyController::class );

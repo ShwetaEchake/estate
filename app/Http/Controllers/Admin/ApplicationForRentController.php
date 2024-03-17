@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Repositories\ApplicationForRentRepository;
+use Carbon\Carbon;
 
 
 class ApplicationForRentController extends Controller
@@ -25,13 +26,19 @@ class ApplicationForRentController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         $zones = Zone::latest()->get();
         $partys = PartyRegistration::latest()->get();
         $propertys = PropertyRegistration::latest()->get();
         $applications = ApplicationForRent::latest()->get();
-        return view('admin.application-for-rents')->with(['applications'=> $applications, 'zones'=> $zones,'partys'=> $partys,'propertys'=> $propertys]);
+
+        return view('admin.application-for-rents')->with([
+            'applications'=> $applications,
+             'zones'=> $zones,
+             'partys'=> $partys,
+             'propertys'=> $propertys,
+        ]);
     }
 
     /**
@@ -158,5 +165,48 @@ class ApplicationForRentController extends Controller
         }
         return $response;
 
+    }
+
+    public function advance(Request $request){
+
+        $zones = Zone::latest()->get();
+        $partys = PartyRegistration::latest()->get();
+        $propertys = PropertyRegistration::latest()->get();
+        $applications = ApplicationForRent::latest()->get();
+
+        // $todayDate = Carbon::now()->format('Y-m-d');
+        // $applications = ApplicationForRent::when($request->date != null , function ($q) use ($request) {
+                            
+        //                     return $q->whereDate('created_at',$request->date);
+        //                 }, function ($q) use ($todayDate){
+        //                     return $q->whereDate('created_at',$todayDate);
+        //                 })
+        //                 ->when($request->application_status	!= null , function ($q) use ($request) {
+        //                     return $q->where('application_status', $request->application_status);
+        //                 })
+        //                 ->paginate(10);
+
+
+            if ($request->filled('start_date') && $request->filled('end_date')) {
+                $startDate = $request->start_date;
+                $endDate = $request->end_date;
+            
+                $applications = $applications->whereBetween('created_at', [$startDate, $endDate]);
+            }
+            
+            if ($request->has('application_status')) {
+                $statusFilter = $request->application_status;
+            
+                if ($statusFilter !== 'all') {
+                    $applications = $applications->where('application_status', $statusFilter);
+                }
+            }
+
+            return view('admin.application-for-rents')->with([
+                'applications'=> $applications,
+                'zones'=> $zones,
+                'partys'=> $partys,
+                'propertys'=> $propertys,
+           ]);
     }
 }
