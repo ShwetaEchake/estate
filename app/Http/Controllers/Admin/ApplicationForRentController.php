@@ -174,19 +174,6 @@ class ApplicationForRentController extends Controller
         $propertys = PropertyRegistration::latest()->get();
         $applications = ApplicationForRent::latest()->get();
 
-        // $todayDate = Carbon::now()->format('Y-m-d');
-        // $applications = ApplicationForRent::when($request->date != null , function ($q) use ($request) {
-                            
-        //                     return $q->whereDate('created_at',$request->date);
-        //                 }, function ($q) use ($todayDate){
-        //                     return $q->whereDate('created_at',$todayDate);
-        //                 })
-        //                 ->when($request->application_status	!= null , function ($q) use ($request) {
-        //                     return $q->where('application_status', $request->application_status);
-        //                 })
-        //                 ->paginate(10);
-
-
             if ($request->filled('start_date') && $request->filled('end_date')) {
                 $startDate = $request->start_date;
                 $endDate = $request->end_date;

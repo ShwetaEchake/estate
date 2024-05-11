@@ -3,14 +3,14 @@
     <x-slot name="heading"> Property Registration</x-slot>
 
 
-    <style>
+    <!-- <style>
         input:in-range {
             border: 1px solid green;
         }
         input:out-of-range {
             border: 1px solid red;
         }
-    </style>
+    </style> -->
 
 
 

@@ -25,7 +25,7 @@ class StorePropertyRegistrationRequest extends FormRequest
         return [
             'zone_id' => 'required',
             'property_type_id' => 'required',
-            'property_no' => 'required|unique:property_registrations,property_no',
+            // 'property_no' => 'required|unique:property_registrations,property_no',
             'old_property_no' => 'required',
             'property_name' => 'required',
             'property_address' => 'required',

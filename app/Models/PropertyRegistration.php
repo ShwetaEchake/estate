@@ -64,10 +64,10 @@ class PropertyRegistration extends BaseModel
             } else {
                 $nextID = 1;
             }
-            $model->property_no = 'BNCMC' . sprintf("%05s", $nextID);
+            $model->property_no = 'BNCMC_' . sprintf("%05s", $nextID);
             while (self::where('property_no', $model->property_no)->exists()) {
                 $nextID++;
-                $model->property_no = 'BNCMC' . sprintf("%05s", $nextID);
+                $model->property_no = 'BNCMC_' . sprintf("%05s", $nextID);
             }
         });
     }
