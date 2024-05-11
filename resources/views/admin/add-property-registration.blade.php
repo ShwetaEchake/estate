@@ -3,6 +3,17 @@
     <x-slot name="heading"> Property Registration</x-slot>
 
 
+    <style>
+        input:in-range {
+            border: 1px solid green;
+        }
+        input:out-of-range {
+            border: 1px solid red;
+        }
+    </style>
+
+
+
         <!-- Add Form -->
         <div class="row" id="addContainer" style="">
             <div class="col-sm-12">
@@ -33,11 +44,11 @@
                                     </select>
                                     <span class="text-danger error-text property_type_id_err"></span>
                                 </div>
-                                <div class="col-md-4">
+                                <!-- <div class="col-md-4">
                                     <label class="col-form-label" for="property_no"> Property No <span class="text-danger">*</span></label>
                                     <input class="form-control" name="property_no" value="{{'BNCMC' . Str::upper(Str::random(11)); }}" type="text" placeholder="Property No" readonly></input>
                                     <span class="text-danger error-text property_no_err"></span>
-                                </div>
+                                </div> -->
                             </div>
 
                             <div class="mb-2 row">
@@ -79,7 +90,7 @@
                             <div class="mb-4 row">
                                 <div class="col-md-4">
                                     <label class="col-form-label" for="area"> Area[sq/m] <span class="text-danger">*</span></label>
-                                    <input class="form-control" name="area" type="number" placeholder="Enter Area">
+                                    <input class="form-control" name="area" type="number" min="1" max="100"  placeholder="Enter Area">
                                     <span class="text-danger error-text area_err"></span>
                                 </div>
                                 <div class="col-md-4">
@@ -277,58 +288,59 @@
     });
 </script>
 
-{{-- Add More Form --}}
-<script>
-  $('.addMoreForm').on('click',function(){
-    addMoreForm();
-  });
+    {{-- Add More Form --}}
+    <script>
+        $('.addMoreForm').on('click',function(){
+            addMoreForm();
+        });
 
-  var rowId = 1; 
-  function addMoreForm() {
-    var tr = '<tr id="row_' + rowId + '">' +
-        '<td><input type="text" name="unit_no[]" class="form-control" multiple=""></td>' +
-        '<td><input type="number" name="area_filed[]" class="form-control" multiple=""></td>' +
-        '<td><input type="text" name="floor[]" class="form-control" multiple=""></td>' +
-        '<td><select class="js-example-basic-single form-control" name="type_of_use_id[]"  id="type_of_use_id_' + rowId + '" ><option value="">--Select Type Of Use--</option>@foreach ($type_of_use as $data)<option value="{{ $data->id }}">{{ $data->type_of_use }}</option>@endforeach</select></td>' +
-        '<td><select class="js-example-basic-single form-control" name="estate_id[]" id="estate_id_' + rowId + '"><option value="">--Select Estate--</option>@foreach ($estates as $data)<option value="{{ $data->id  }}">{{ $data->estate_name }}</option>@endforeach</select></td>' +
-        '<td><input type="radio" name="lease_rent[' + rowId + ']" value="lease" class="" multiple=""> Lease <input type="radio" name="lease_rent[' + rowId + ']" value="rent" class="" multiple=""> Rent <input type="radio" name="lease_rent[' + rowId + ']" value="self_owner" class="" multiple=""> Self Owner </td>' +
-        '<td><input type="file" name="document[]" class="form-control" multiple=""></td>' +
-        '<td><a href="javascrip:" class="btn btn-sm btn-danger removeAddMore" data-rowid="' + rowId + '"><i class="fa fa-remove"></i></a></td>' +
-        '<tr>';
+        var rowId = 1; 
+        function addMoreForm() {
+                var tr = 
+                '<tr id="row_' + rowId + '">' +
+                    '<td><input type="text" name="unit_no[]" class="form-control" multiple=""></td>' +
+                    '<td><input type="number" name="area_filed[]" class="form-control" multiple=""></td>' +
+                    '<td><input type="text" name="floor[]" class="form-control" multiple=""></td>' +
+                    '<td><select class="js-example-basic-single form-control" name="type_of_use_id[]"  id="type_of_use_id_' + rowId + '" ><option value="">--Select Type Of Use--</option>@foreach ($type_of_use as $data)<option value="{{ $data->id }}">{{ $data->type_of_use }}</option>@endforeach</select></td>' +
+                    '<td><select class="js-example-basic-single form-control" name="estate_id[]" id="estate_id_' + rowId + '"><option value="">--Select Estate--</option>@foreach ($estates as $data)<option value="{{ $data->id  }}">{{ $data->estate_name }}</option>@endforeach</select></td>' +
+                    '<td><input type="radio" name="lease_rent[' + rowId + ']" value="lease" class="" multiple=""> Lease <input type="radio" name="lease_rent[' + rowId + ']" value="rent" class="" multiple=""> Rent <input type="radio" name="lease_rent[' + rowId + ']" value="self_owner" class="" multiple=""> Self Owner </td>' +
+                    '<td><input type="file" name="document[]" class="form-control" multiple=""></td>' +
+                    '<td><a href="javascrip:" class="btn btn-sm btn-danger removeAddMore" data-rowid="' + rowId + '"><i class="fa fa-remove"></i></a></td>' +
+                '<tr>';
 
-    $('#addMore').append(tr); 
-    $('#type_of_use_id_' + rowId + ', #estate_id_' + rowId).select2();   // Reinitialize Select2 for the new row
-    rowId++;
-}
-
-  $(document).on('click', '.removeAddMore', function () {
-    if ($(this).parents('table').find('.removeAddMore').length > 1) {
-        $(this).parent().parent().remove();
-    } else {
-        alert("Cannot remove the last element.");
-    }        
-  });
-</script>
-
-
-{{-- Function to show/hide based on radio button value --}}
-<script>
-    function toggleButtons(unitType) {
-        $('.addMoreForm, .removeAddMore').toggle(unitType === 'multiple_units');
-        $('#addMore tr:not(:first-child)').remove(); // Remove additional rows in one_unit mode
-        if (unitType === 'one_unit') {
-           $('#addMore input,select,file').val('').trigger('change');
-           $('#addMore input[type="radio"]').prop('checked', false).trigger('change');
+                $('#addMore').append(tr); 
+                $('#type_of_use_id_' + rowId + ', #estate_id_' + rowId).select2();   // Reinitialize Select2 for the new row
+                rowId++;
         }
-    }
 
-    var initialUnitType = $('input[name="unit_type"]:checked').val();
-    toggleButtons(initialUnitType);
+        $(document).on('click', '.removeAddMore', function () {
+            if ($(this).parents('table').find('.removeAddMore').length > 1) {
+                $(this).parent().parent().remove();
+            } else {
+                alert("Cannot remove the last element.");
+            }        
+        });
+    </script>
 
-    $('input[name="unit_type"]').change(function () {
-        var selectedUnitType = $(this).val();
-        toggleButtons(selectedUnitType);
-    });
-</script>
+
+    {{-- Function to show/hide based on radio button value --}}
+    <script>
+        function toggleButtons(unitType) {
+            $('.addMoreForm, .removeAddMore').toggle(unitType === 'multiple_units');
+            $('#addMore tr:not(:first-child)').remove(); // Remove additional rows in one_unit mode
+            if (unitType === 'one_unit') {
+            $('#addMore input,select,file').val('').trigger('change');
+            $('#addMore input[type="radio"]').prop('checked', false).trigger('change');
+            }
+        }
+
+        var initialUnitType = $('input[name="unit_type"]:checked').val();
+        toggleButtons(initialUnitType);
+
+        $('input[name="unit_type"]').change(function () {
+            var selectedUnitType = $(this).val();
+            toggleButtons(selectedUnitType);
+        });
+    </script>
 
 

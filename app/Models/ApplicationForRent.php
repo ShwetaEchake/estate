@@ -20,7 +20,7 @@ class ApplicationForRent extends BaseModel
     }
     public function property()
     {
-        return $this->belongsTo(PropertyRegistration::class,'property_reg_id');
+        return $this->belongsTo(PropertyRegistration::class,'property_reg_id')->withDefault();
     }
     public function party()
     {

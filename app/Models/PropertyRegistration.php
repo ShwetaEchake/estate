@@ -17,7 +17,7 @@ class PropertyRegistration extends BaseModel
 
     public function zone()
     {
-        return $this->belongsTo(Zone::class);
+        return $this->belongsTo(Zone::class)->withDefault();
     }
 
     public function source()
@@ -49,6 +49,26 @@ class PropertyRegistration extends BaseModel
             self::where('id', $propertyregistration->id)->update([
                 'deleted_by'=> Auth::user()->id,
             ]);
+        });
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+        self::creating(function ($model) {
+            $getUser = self::orderBy('property_no', 'desc')->first();
+
+            if ($getUser) {
+                $latestID = intval(substr($getUser->property_no, 5));
+                $nextID = $latestID + 1;
+            } else {
+                $nextID = 1;
+            }
+            $model->property_no = 'BNCMC' . sprintf("%05s", $nextID);
+            while (self::where('property_no', $model->property_no)->exists()) {
+                $nextID++;
+                $model->property_no = 'BNCMC' . sprintf("%05s", $nextID);
+            }
         });
     }
 }
